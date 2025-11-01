@@ -18,7 +18,10 @@ def main() -> None:
         if not player.get("race"):
             raise ValueError("Field 'Raise' can't be empty")
 
-        race_name, race_description, skills = player["race"].values()
+        race_data = player["race"]
+        race_name = race_data.get("name")
+        race_description = race_data.get("description")
+        skills = race_data.get("skills")
 
         race, _ = Race.objects.get_or_create(
             name=race_name,
@@ -28,21 +31,26 @@ def main() -> None:
         if skills:
             for skill in skills:
                 name, bonus = skill.values()
+
                 Skill.objects.get_or_create(
                     name=name,
                     bonus=bonus,
                     race=race
                 )
 
-        guild = player["guild"]
+        guild = player.get("guild")
 
         if guild:
-            guild_name, description = guild.values()
+            guild_name = guild.get("name")
+            description = guild.get("description")
+
             guild, _ = Guild.objects.get_or_create(
                 name=guild_name,
                 description=description
             )
+
         else:
+            print(guild)
             guild = None
 
         Player.objects.create(
