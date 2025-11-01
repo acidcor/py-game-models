@@ -30,7 +30,8 @@ def main() -> None:
 
         if skills:
             for skill in skills:
-                name, bonus = skill.values()
+                name = skill.get("name")
+                bonus = skill.get("bonus")
 
                 Skill.objects.get_or_create(
                     name=name,
